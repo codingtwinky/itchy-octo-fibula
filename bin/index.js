@@ -2,8 +2,8 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 /**
  * 
@@ -11,11 +11,13 @@ app.use(bodyParser.json())
  *   keywords - keywords separated by comma
  *   width - display width
  *   height - display height
+ *   src - source web address
 **/
 app.get('/getDonationLink', function (req, res) {
   var keywords = req.query.keywords;
   var width = req.query.width;
   var height = req.query.height;
+  var src = req.query.src;
   res.type('html');
 
   console.log('keywords: [%s], width: [%s], height: [%s]', keywords, width, height);
@@ -27,10 +29,14 @@ app.get('/getDonationLink', function (req, res) {
   
   keywords = keywords.split(',');
   
-  res.send(getDonationLink(keywords, width, height));
+  res.send(getDonationLink(keywords, width, height, src));
 });
 
-var getDonationLink(keywords, width, height) {
+var getDonationLink = function(keywords, width, height, src) {
+  // add entry to database to keep track of all queries
+  
+  // derive and return html
+  
   return 'hello world';
 }
 
