@@ -4,7 +4,7 @@
   "description": "Smart donate link for non profit",
   "version": "0.0.1",
   "scripts": {
-    "start": "",
+    "start": "node ./bin/index.js",
     "test": ""
   },
   "repository": {
