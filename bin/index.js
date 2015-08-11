@@ -8,31 +8,34 @@ app.use(bodyParser.json());
 /**
  * 
  * args:
- *   keywords - keywords separated by comma
- *   width - display width
- *   height - display height
+ *   keywords - comma separated keywords inputed by user
+ *   meta_keywords - comma separated keywords auto extracted from web src 
+ *   width - display width in pixels
+ *   height - display height in pixels
  *   src - source web address
 **/
 app.get('/getDonationLink', function (req, res) {
-  var keywords = req.query.keywords;
-  var width = req.query.width;
-  var height = req.query.height;
-  var src = req.query.src;
-  res.type('html');
-
-  console.log('keywords: [%s], width: [%s], height: [%s]', keywords, width, height);
+  var args = {
+    keywords: req.query.keywords || '',
+    meta_keywords: req.query.meta_keywords || '',
+    width: req.query.width || 500,
+    height: req.query.height || 110,
+    src: req.query.src || null
+  }
+  var argError = validateArgs(args);
   
-  if (!isValidArgument(keywords, width, height)) {
-    res.send('invalid arugment');
+  console.log('keywords: [%s], argError: [%s]', JSON.stringify(args), argError);
+  res.type('text/html');
+  
+  if (argError) {
+    res.send(argError);
     return;
   }
   
-  keywords = keywords.split(',');
-  
-  res.send(getDonationLink(keywords, width, height, src));
+  res.send(getDonationLink(args));
 });
 
-var getDonationLink = function(keywords, width, height, src) {
+var getDonationLink = function(args) {
   // add entry to database to keep track of all queries
   
   // derive and return html
@@ -40,16 +43,23 @@ var getDonationLink = function(keywords, width, height, src) {
   return 'hello world';
 }
 
-var isValidArgument = function(keywords, width, height) {
-  if (!keywords || !width || !height) {
-    return false;
+var validateArgs = function(args) {
+  if (args.keywords.length == 0 && args.meta_keywords.length == 0) {
+    return 'missing keywords, please provide keywords';
   }
   
-  if (!isNumeric(width) || !isNumeric(height)) {
-    return false;
+  if (!isNumeric(args.width)) {
+    return 'invalid width';
   }
   
-  return true;
+  if (!isNumeric(args.height)) {
+    return 'invalid height';
+  }
+  
+  args.width = Math.round(args.width);
+  args.height = Math.round(args.height);
+  
+  return null;
 }
 
 var isNumeric = function(n) {
