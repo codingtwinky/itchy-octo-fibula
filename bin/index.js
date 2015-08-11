@@ -56,7 +56,7 @@ var isNumeric = function(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-var server = app.listen(7080, function () {
+var server = app.listen(process.env.PORT || 7080, function () {
   var host = server.address().address;
   var port = server.address().port;
 
