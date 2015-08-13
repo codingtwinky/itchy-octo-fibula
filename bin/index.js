@@ -5,11 +5,13 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(express.static('../public'));
+
 /**
  * 
  * args:
  *   keywords - comma separated keywords inputed by user
- *   meta_keywords - comma separated keywords auto extracted from web src 
+ *   metaKeyword - comma separated keywords auto extracted from web src 
  *   width - display width in pixels
  *   height - display height in pixels
  *   src - source web address
@@ -17,7 +19,7 @@ app.use(bodyParser.json());
 app.get('/getDonationLink', function (req, res) {
   var args = {
     keywords: req.query.keywords || '',
-    meta_keywords: req.query.meta_keywords || '',
+    metaKeyword: req.query.metaKeyword || '',
     width: req.query.width || 500,
     height: req.query.height || 110,
     src: req.query.src || null
@@ -44,7 +46,7 @@ var getDonationLink = function(args) {
 }
 
 var validateArgs = function(args) {
-  if (args.keywords.length == 0 && args.meta_keywords.length == 0) {
+  if (args.keywords.length == 0 && args.metaKeyword.length == 0) {
     return 'missing keywords, please provide keywords';
   }
   
