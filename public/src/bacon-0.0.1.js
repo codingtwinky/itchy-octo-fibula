@@ -18,7 +18,7 @@
   for (i in divs) {
     var div = divs[i];
     var args = defaultUrlArgs;
-    var width = div.getAttribute('width');
+    var width = div.getAttribute('width');gw
     if (width) {
       args += "&width=" + width;
     }
